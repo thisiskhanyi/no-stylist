@@ -11,11 +11,11 @@ function! Stylish()
     let node = GetNodeName()
     execute "normal! li" .node. ""
     execute 'normal! vi}"ny'
-    execute 'normal! vw"by'
+    execute 'normal! vw"zy'
 
     :e styles/StylesPlug.js
 
-    let reg = getreg("b") 
+    let reg = getreg("z") 
     let [s:line, s:col] = searchpos(reg)
     if (s:line == 0)
         execute "normal! gg}oexport const \<ESC>"
@@ -37,24 +37,30 @@ function! Stylish()
 
     :w
     :e#
-    execute "normal! gg}iimport {"
-    execute 'normal! "np'
-    execute 'normal! bdhdwa} from "../styles/StylesPlug"'
-    execute "normal! o\<ESC>"
+
+    let [s:lin, s:col] = searchpos("../styles/StylesPlug")
+    if (s:lin == 0)
+        execute "normal! gg}iimport {"
+        execute 'normal! "np'
+        execute 'normal! bdhdwa} from "../styles/StylesPlug"'
+        execute "normal! o\<ESC>"
+    endif
 
 
 endfunction
 
 function! DoesExist() 
-    let reg = getreg("b") 
-    let [s:line, s:col] = searchpos(reg)
+    let regii = getreg("b") 
+    let regs = regii[0:len(regii)-2]
+    let [s:line, s:col] = searchpos(regs)
+
     if (s:line == 0)
-        echo 'Line:   ' . s:line 
+        echo 'Line:   ' . regs
     endif
     if (s:line > 0) 
         echo 'Column: ' . s:col
     endif
-    echo reg
+    echo regs
 
 endfunction
 
