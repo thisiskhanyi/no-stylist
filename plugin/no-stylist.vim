@@ -11,13 +11,27 @@ function! Stylish()
     let node = GetNodeName()
     execute "normal! li" .node. ""
     execute 'normal! vi}"ny'
+    execute 'normal! vw"by'
 
     :e styles/StylesPlug.js
-    execute "normal! gg}oexport const \<ESC>"
-    execute 'normal! "npbhv$d'
-    execute "normal! a\<SPACE>=\<SPACE>{\<CR>}\<ESC>ko" 
-    execute "normal! pbdh\<ESC>$a:\<SPACE>{\<ESC>"
-    execute "normal! o}\<ESC>ko"
+
+    let reg = getreg("b") 
+    let [s:line, s:col] = searchpos(reg)
+    if (s:line == 0)
+        execute "normal! gg}oexport const \<ESC>"
+        execute 'normal! "npbhv$d'
+        execute "normal! a\<SPACE>=\<SPACE>{\<CR>}\<ESC>ko" 
+        execute "normal! pbdh\<ESC>$a:\<SPACE>{\<ESC>"
+    endif
+    if (s:line > 0) 
+        execute "normal! /".reg."\<CR>"
+        execute "normal! o\<ESC>"
+        execute 'normal! "np'
+        execute "normal! 0vf.dv$dko"
+        execute "normal! pA:\<SPACE>{\<ESC>"
+    endif
+
+    execute "normal! o},\<ESC>ko"
     execute 'normal! "kp'
     execute "normal! (V)="
 
@@ -26,7 +40,21 @@ function! Stylish()
     execute "normal! gg}iimport {"
     execute 'normal! "np'
     execute 'normal! bdhdwa} from "../styles/StylesPlug"'
-    execute "normal! o"
+    execute "normal! o\<ESC>"
+
+
+endfunction
+
+function! DoesExist() 
+    let reg = getreg("b") 
+    let [s:line, s:col] = searchpos(reg)
+    if (s:line == 0)
+        echo 'Line:   ' . s:line 
+    endif
+    if (s:line > 0) 
+        echo 'Column: ' . s:col
+    endif
+    echo reg
 
 endfunction
 
@@ -51,3 +79,4 @@ function! GetRandomInteger()
 endfunction
 
 command! Style call Stylish()
+command! Search call DoesExist()
