@@ -40,10 +40,12 @@ function! Stylish()
 
     let [s:lin, s:col] = searchpos("../styles/StylesPlug")
     if (s:lin == 0)
+        execute "normal! mn"
         execute "normal! gg}iimport {"
         execute 'normal! "np'
         execute 'normal! bdhdwa} from "../styles/StylesPlug"'
         execute "normal! o\<ESC>"
+        execute "normal! `n"
     endif
 
 
