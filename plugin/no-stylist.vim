@@ -1,9 +1,9 @@
-function! Stylish()
+function! s:Stylish()
     execute 'normal! vi}"kyd'
     execute "normal! kJ0f{"
     execute "normal! di}"
 
-    let compName = expand('%:r')
+    let compName = expand('%:t:r')
     execute "normal! i" .compName. "Style"
     execute "normal! bvUw"
     execute "normal! i.\<ESC>"
@@ -18,7 +18,7 @@ function! Stylish()
     let reg = getreg("z") 
     let [s:line, s:col] = searchpos(reg)
     if (s:line == 0)
-        execute "normal! gg}oexport const \<ESC>"
+        execute "normal! Goexport const \<ESC>"
         execute 'normal! "npbhv$d'
         execute "normal! a\<SPACE>=\<SPACE>{\<CR>}\<ESC>ko" 
         execute "normal! pbdh\<ESC>$a:\<SPACE>{\<ESC>"
@@ -38,20 +38,20 @@ function! Stylish()
     :w
     :e#
 
+    execute "normal! mn"
     let [s:lin, s:col] = searchpos("../styles/StylesPlug")
     if (s:lin == 0)
-        execute "normal! mn"
         execute "normal! gg}iimport {"
         execute 'normal! "np'
         execute 'normal! bdhdwa} from "../styles/StylesPlug"'
         execute "normal! o\<ESC>"
-        execute "normal! `n"
     endif
+    execute "normal! `n"
 
 
 endfunction
 
-function! DoesExist() 
+function! s:DoesExist() 
     let regii = getreg("b") 
     let regs = regii[0:len(regii)-2]
     let [s:line, s:col] = searchpos(regs)
@@ -66,7 +66,7 @@ function! DoesExist()
 
 endfunction
 
-function! GetNodeName()
+function! s:GetNodeName()
     let chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',]
 
     let nodeStr = ""
@@ -78,7 +78,7 @@ function! GetNodeName()
 
 endfunction
 
-function! GetRandomInteger()
+function! s:GetRandomInteger()
     if has('win32')
         return system("echo %RANDOM%")
     else
@@ -86,5 +86,4 @@ function! GetRandomInteger()
     endif
 endfunction
 
-command! Style call Stylish()
-command! Search call DoesExist()
+command! Style call s:Stylish()
