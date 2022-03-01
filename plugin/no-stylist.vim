@@ -8,7 +8,7 @@ function! s:Stylish()
     execute "normal! bvUw"
     execute "normal! i.\<ESC>"
 
-    let node = GetNodeName()
+    let node = s:GetNodeName()
     execute "normal! li" .node. ""
     execute 'normal! vi}"ny'
     execute 'normal! vw"zy'
@@ -71,7 +71,7 @@ function! s:GetNodeName()
 
     let nodeStr = ""
     for i in range(1, 6)
-        let index = GetRandomInteger() % len(chars)
+        let index = s:GetRandomInteger() % len(chars)
         let nodeStr = nodeStr . chars[index]
     endfor
     return nodeStr
