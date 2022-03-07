@@ -35,7 +35,7 @@ function! s:Stylish()
     execute 'normal! "kp'
     execute "normal! (V)="
 
-    :w
+    :w!
     :e#
 
     execute "normal! mn"
